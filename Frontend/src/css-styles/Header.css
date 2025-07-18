@@ -1,6 +1,8 @@
 
 header {
-    background: #3C454D80;
+    background: #3f3f3f;
+    position: sticky;
+    top: 0;
 }
 
 .header-wrapper {
@@ -30,4 +32,32 @@ header {
 
 a {
     color: #fff;
+}
+
+
+/* ---------------- HEADER QUERIES ---------------- */
+
+@media screen and (min-width: 700px) {
+
+    header {
+        animation: header-movement both;
+        animation-timeline: scroll();
+        animation-range-start: 0px;
+        animation-range-end: 250px;
+    }
+}
+
+
+
+
+/* ---------------- ANIMATIONS ---------------- */
+
+@keyframes header-movement {
+    0% {
+        padding: 20px 0;
+    }
+
+    100% {
+        padding: 0;
+    }
 }
