@@ -46,7 +46,7 @@ const CONFIG : TConfig = {
     },
 
     production: {
-                app: {
+        app: {
             PORT: process.env.PORT || 8080
         },
         db: {
