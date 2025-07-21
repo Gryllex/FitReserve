@@ -10,6 +10,45 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int       @id @unique @default(autoincrement())
+  email             String    @unique
+  password          String
+  name              String
+  role              Role      @default(CLIENT)
+  createdAt         DateTime  @default(now())  
+  trainerSessions   Session[] @relation("TrainerSessions")
+  clientSessions    Session[] @relation("ClientSessions")
+  trainerAvailability TrainerAvailability[]
+}
+
+model TrainerAvailability {
+  id            Int       @id @unique @default(autoincrement())
+  trainer       User      @relation(fields: [trainerId], references: [id])   
+  trainerId     Int
+  daysOfWeek    Int       // 1 = Lunes, 7 = Domingo
+  startTime     String  // Formato: 9:00
+  endTime       String  // Formato: 17:00
+}
+
+model Session {
+  id            Int       @id @unique @default(autoincrement())
+  date          DateTime
+  duration      Int
+  trainer       User      @relation(fields: [trainerId], references: [id], name: "TrainerSessions")
+  trainerId     Int
+  client        User      @relation(fields: [clientId], references: [id], name: "ClientSessions")
+  clientId      Int
+  createdAt     DateTime  @default(now())  
+  cancelled     Boolean   @default(false)
+}
+
+enum Role {
+  CLIENT
+  TRAINER
+  ADMIN
 }

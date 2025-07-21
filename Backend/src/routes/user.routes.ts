@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { UserController } from '../controllers/user.controller'
+import { authMiddleware } from "../middlewares/auth.middlewares";
 
 
 export const userRoutes = Router();
-userRoutes.get('/', UserController.getAllUsers);
+
 userRoutes.post('/', UserController.createUser);
-userRoutes.patch('/:id', UserController.updateUser);
-userRoutes.delete('/:id', UserController.deleteUser);
+userRoutes.patch('/:id', authMiddleware, UserController.updateUser);
+userRoutes.delete('/:id', authMiddleware, UserController.deleteUser);
+userRoutes.get('/me', authMiddleware, UserController.getCurrentUser);
