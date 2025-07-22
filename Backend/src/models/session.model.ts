@@ -1,5 +1,11 @@
 import { prisma } from '../lib/prisma' 
 
+
+interface Session {
+  date: Date;
+  duration: number;
+}
+
 export class SessionModel {
 
     static async createSession (data: {
@@ -48,15 +54,50 @@ export class SessionModel {
         })
     }
 
-    static async getTrainerSessionsAt (trainerId: number, date: Date) {
-        return await prisma.session.findFirst({
-            where: { trainerId, date, cancelled: false},
-        })
+    static async getTrainerSessionsAt (trainerId: number, sessionDate: Date, duration: number) {
+        // Specified time to check if it's available
+        const start = sessionDate;
+        const end = new Date(start.getTime() + duration * 60000) // Duration is in minutes, need to transform to ms
+        
+        return this.findOverlappingSession( { trainerId }, start, end)
     }
 
-    static async getClientSessionsAt (clientId: number, date: Date) {
-        return await prisma.session.findFirst({
-            where: { clientId, date, cancelled: false},
+    static async getClientSessionsAt (clientId: number, sessionDate: Date, duration: number) {
+        // Specified time to check if it's available
+        const start = sessionDate;
+        const end = new Date(start.getTime() + duration * 60000) // Duration is in minutes, need to transform to ms
+
+        return this.findOverlappingSession( { clientId }, start, end)
+    }
+
+
+
+    // Private function to find if theres a session overlap between requested and existing sessions
+    private static async findOverlappingSession( whereClause: object, start: Date, end: Date){
+
+        // Geting interval for the whole day
+        const dayStart = new Date(start)
+        dayStart.setHours(0,0,0,0)
+        const dayEnd = new Date(end)
+        dayEnd.setHours(23,59,59,999)
+
+        // Get all sessions for the day
+        const sessions = await prisma.session.findMany({
+            where: {
+                ...whereClause,
+                cancelled: false,
+                date: {
+                    gte: dayStart,
+                    lte: dayEnd
+                }
+            }
+        })
+
+        // Check if requested session overlaps an existing session
+        return sessions.find(( session: Session ) => {
+            const existingStart = new Date(session.date)
+            const existingEnd = new Date(existingStart.getTime() + session.duration * 60000)
+            return start < existingEnd && end > existingStart
         })
     }
 }

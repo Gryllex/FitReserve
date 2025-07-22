@@ -9,6 +9,7 @@ if (!JWT_SECRET) {
   throw new Error("JWT_SECRET no está definido en el archivo .env");
 }
 
+// Middleware for protected routes that need to access to req.user (Already logged users)
 export interface AuthenticatedRequest extends Request {
     user?: {
         userId: number,

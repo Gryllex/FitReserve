@@ -2,15 +2,17 @@ import { Response } from "express";
 import { SessionModel } from "../models/session.model";
 import { validateSession } from "../schemas/sessionSchema";
 import { AuthenticatedRequest } from "../middlewares/auth.middlewares";
+import { TrainerModel } from "../models/trainer.model";
 
 export class SessionController {
 
+    // Get all the sessions for a client
     static getClientSessions = async (req: AuthenticatedRequest, res: Response) => {
         try {
             if (!req.user){
                 return res.status(401).json({ error: 'No autorizado '})
             }
-            const userId = req.user.userId; // Middleware pendiente, req.body.userId para que no de error
+            const userId = req.user.userId;
             const sessions = await SessionModel.getClientSessions(userId)
             return res.status(200).json({ sessions })
         } catch(e) {
@@ -24,7 +26,7 @@ export class SessionController {
             if (!req.user){
                 return res.status(401).json({ error: 'No autorizado '})
             }
-            const userId = req.user.userId; // Middleware pendiente, req.body.userId para que no de error
+            const userId = req.user.userId;
             const sessions = await SessionModel.getTrainerSessions(userId)
             return res.status(200).json({ sessions })
         } catch(e) {
@@ -34,13 +36,14 @@ export class SessionController {
     }
 
 
+    // Book a new session
     static bookSession = async (req: AuthenticatedRequest, res: Response) => {
         try {
             if (!req.user){
                 return res.status(401).json({ error: 'No autorizado '})
             }
             const { trainerId, date, duration } = req.body
-            const clientId = req.user.userId; // Middleware pendiente, req.body.userId para que no de error
+            const clientId = req.user.userId;
 
             // Data verification using ZOD
             const validatedData = validateSession({trainerId, clientId, date, duration})
@@ -50,18 +53,33 @@ export class SessionController {
 
             const { date: sessionDate } = validatedData.data
 
+            // Check trainer's working schedule
+            const dayOfWeek = sessionDate.getDay()
+            const startTime = sessionDate.getHours() * 60 + sessionDate.getMinutes() 
+            const endTime = startTime + duration
+
+            const availability = await TrainerModel.getAvailabilityForDay( trainerId, dayOfWeek)
+
+            const isAvailable = availability.some( (trainer: {startTime: number; endTime: number}) =>
+                startTime >= trainer.startTime && endTime <= trainer.endTime
+            )
+
+            if (!isAvailable) return res.status(400).json({ error: 'Trainer is not available at selected date' })
+
+
             // check if a trainer is busy for the date
-            const trainerBusy = await SessionModel.getTrainerSessionsAt(trainerId, sessionDate)
+            const trainerBusy = await SessionModel.getTrainerSessionsAt(trainerId, sessionDate, duration)
             if (trainerBusy) {
                 return res.status(401).json({error: 'The trainer is busy at the date specified'})
             }
 
             // check if client has already a booked session for the date
-            const clientBusy = await SessionModel.getClientSessionsAt(clientId, sessionDate)
+            const clientBusy = await SessionModel.getClientSessionsAt(clientId, sessionDate, duration)
             if (clientBusy) {
                 return res.status(401).json({ error: 'You cannot book more than 1 session for the same date' })
             }
             
+
             const session = await SessionModel.createSession({
                 trainerId, clientId, date: sessionDate, duration
             })
@@ -73,6 +91,8 @@ export class SessionController {
         } 
     }
 
+
+    // Cancel an existing session
     static cancelSession = async (req: AuthenticatedRequest, res: Response) => {
         try {
             const sessionId = Number(req.params.id)

@@ -30,9 +30,9 @@ model TrainerAvailability {
   id            Int       @id @unique @default(autoincrement())
   trainer       User      @relation(fields: [trainerId], references: [id])   
   trainerId     Int
-  daysOfWeek    Int       // 1 = Lunes, 7 = Domingo
-  startTime     String  // Formato: 9:00
-  endTime       String  // Formato: 17:00
+  daysOfWeek    Int   // 0 = Domingo, 6 = Sabado
+  startTime     Int   // Formato: Minutos desde las 00 -> 09:00 = 540
+  endTime       Int   // Formato: Minutos desde las 00 -> 17:00 = 1020
 }
 
 model Session {

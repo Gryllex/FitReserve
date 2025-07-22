@@ -17,7 +17,7 @@ export class UserController {
             res.status(201).json(newUser)
         } catch(e) {
             console.error(e);
-            res.status(500).json({ error: 'Error al crear el usuario' });
+            res.status(500).json({ error: 'Error creating user' });
         }
     }
 
@@ -35,7 +35,7 @@ export class UserController {
         try {
             const userExists = await UserModel.getUserById(id)
             if (!userExists) {
-                return res.status(404).json({ error: 'El usuario solicitado no existe'})
+                return res.status(404).json({ error: 'User does not exists'})
             }
             
             const updatedUser = await UserModel.updateUser( id, validated.data)
@@ -43,7 +43,7 @@ export class UserController {
 
         } catch(e) {
             console.error(e)
-            res.status(500).json({ error: 'Error al actualizar el usuario' })
+            res.status(500).json({ error: 'Error trying to update user' })
         }
     }
 
@@ -55,20 +55,20 @@ export class UserController {
         try {
             const userExists = await UserModel.getUserById(id)
             if (!userExists) {
-                return res.status(404).json({ error: 'El usuario solicitado no existe'})
+                return res.status(404).json({ error: 'User does not exists'})
             }
             
             const deletedUser = await UserModel.deleteUser(id)
             res.status(200).json(deletedUser)
         } catch(e) {
             console.log(e)
-            res.status(500).json({ error: 'Error al eliminar el usuario' })
+            res.status(500).json({ error: 'Error trying to delete user' })
         }
     }
 
     static getCurrentUser = async (req: AuthenticatedRequest, res: Response) => {
         if (!req.user){
-            return res.status(401).json({ error: 'No autorizado '})
+            return res.status(401).json({ error: 'Not authorized '})
         }
         const userId = req.user.userId; // Middleware pendiente, req.body.userId para que no de error
     
@@ -77,7 +77,7 @@ export class UserController {
             res.status(200).json({ user })
         } catch(e) {
             console.log('[getUserById] Error: ', e)
-            res.status(400).json({ error: 'Error al recuperar el usuario'})
+            res.status(400).json({ error: 'Error trying to get user'})
         }
     
     }
