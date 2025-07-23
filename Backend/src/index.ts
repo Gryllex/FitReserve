@@ -1,10 +1,10 @@
 import express from 'express'
 import cors from 'cors'
-import config from './config'
-import { userRoutes } from './routes/user.routes';
-import { clientRoutes } from './routes/client.routes';
-import { trainerRoutes } from './routes/trainer.routes';
-import { authRoutes } from './routes/auth.routes';
+import config from './config.js'
+import { userRoutes } from './routes/user.routes.ts';
+import { clientRoutes } from './routes/client.routes.ts';
+import { trainerRoutes } from './routes/trainer.routes.ts';
+import { authRoutes } from './routes/auth.routes.ts';
 
 const PORT = config.app.PORT;
 
@@ -12,7 +12,11 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.disable('x-powered-by')
+app.use(cors({
+    origin: 'http://localhost:8000'
+}));
+
 
 
 // routes

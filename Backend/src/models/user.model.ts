@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma"
+import { prisma } from "../lib/prisma.ts"
 
 import { Role } from "../enum/enum"
 
@@ -8,7 +8,7 @@ export class UserModel {
         email: string,
         password: string,
         name: string,
-        role?: Role
+        role: Role
     }) {
         return await prisma.user.create({ data })
     }

@@ -1,10 +1,12 @@
 import dotenv from 'dotenv';
 
+dotenv.config()
+
 const NODE_ENV = process.env.NODE_ENV || 'development'; 
 
-const envFile = NODE_ENV === 'production' ? '.env.production' : '.env.development'
-
-dotenv.config({ path: envFile })
+if (NODE_ENV === 'production'){
+    dotenv.config({ path: '.env.production' })
+} 
 
 
 // TYPES

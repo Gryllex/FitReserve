@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { validateUser } from "../schemas/userSchema";
-import { UserModel } from "../models/user.model";
+import { validatePartialUser, validateUser } from "../schemas/userSchema.ts";
+import { UserModel } from "../models/user.model.ts";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -52,7 +52,7 @@ export class AuthenticationController {
 
     // --- LOGIN ---
     static login = async (req: Request, res: Response) => {
-        const validated = validateUser(req.body);
+        const validated = validatePartialUser(req.body);
 
         if (!validated.success) {
         return res.status(400).json({ error: validated.error.issues });
@@ -60,6 +60,10 @@ export class AuthenticationController {
 
         try {
             const { email, password } = validated.data;
+
+            if (!email || !password) {
+                return res.status(400).json({ error: 'Email and password are needed' })
+            }
 
             const user  = await UserModel.getUserByEmail(email);
             if (!user) return res.status(401).json({ error: 'Invalid email or password' })

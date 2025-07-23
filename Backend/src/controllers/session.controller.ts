@@ -1,8 +1,8 @@
 import { Response } from "express";
-import { SessionModel } from "../models/session.model";
-import { validateSession } from "../schemas/sessionSchema";
-import { AuthenticatedRequest } from "../middlewares/auth.middlewares";
-import { TrainerModel } from "../models/trainer.model";
+import { SessionModel } from "../models/session.model.ts";
+import { validateSession } from "../schemas/sessionSchema.ts";
+import { AuthenticatedRequest } from "../middlewares/auth.middlewares.ts";
+import { TrainerModel } from "../models/trainer.model.ts";
 
 export class SessionController {
 
@@ -60,9 +60,12 @@ export class SessionController {
 
             const availability = await TrainerModel.getAvailabilityForDay( trainerId, dayOfWeek)
 
-            const isAvailable = availability.some( (trainer: {startTime: number; endTime: number}) =>
-                startTime >= trainer.startTime && endTime <= trainer.endTime
-            )
+            if (!availability || availability == null) return res.status(400).json({ error: 'Trainer is not available' })
+
+            const isAvailable = startTime >= availability.startTime && endTime <= availability.endTime;
+            // const isAvailable = availability.some( (trainer: {startTime: number; endTime: number}) =>
+            //     startTime >= trainer.startTime && endTime <= trainer.endTime
+            // )
 
             if (!isAvailable) return res.status(400).json({ error: 'Trainer is not available at selected date' })
 

@@ -1,5 +1,5 @@
 import z from 'zod'
-import { Role } from '../enum/enum'
+import { Role } from '../enum/enum.ts'
 
 const rolesArray = Object.values(Role) as [Role, ...Role[]]
 

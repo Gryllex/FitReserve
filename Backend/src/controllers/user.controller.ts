@@ -1,7 +1,7 @@
-import { UserModel } from "../models/user.model"
+import { UserModel } from "../models/user.model.ts"
 import { Request, Response } from "express"
-import { validateUser, validatePartialUser } from "../schemas/userSchema";
-import { AuthenticatedRequest } from "../middlewares/auth.middlewares";
+import { validateUser, validatePartialUser } from "../schemas/userSchema.ts";
+import { AuthenticatedRequest } from "../middlewares/auth.middlewares.ts";
 
 export class UserController {
 

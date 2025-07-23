@@ -1,0 +1,23 @@
+
+### REGISTER
+POST http://localhost:4000/api/auth/register
+Content-type: application/json
+
+{
+    "name" : "Prueba",
+    "email" : "prueba@gmail.com",
+    "password" : "prueba12345",
+    "role" : "CLIENT"
+}
+
+
+### LOGIN
+POST http://localhost:4000/api/auth/login
+Content-type: application/json
+
+{
+    "email" : "prueba@gmail.com",
+    "password" : "prueba12345"
+}
+
+

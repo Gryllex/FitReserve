@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
+    "dev": "node --watch --loader ts-node/esm src/index.ts",
     "build": "prisma generate && tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js"
   },

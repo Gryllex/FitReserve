@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { TrainerModel } from "../models/trainer.model";
-import { validatePartialTrainer, validateTrainer } from "../schemas/trainerSchema";
-import { AuthenticatedRequest } from "../middlewares/auth.middlewares";
+import { TrainerModel } from "../models/trainer.model.ts";
+import { validatePartialTrainer, validateTrainer } from "../schemas/trainerSchema.ts";
+import { AuthenticatedRequest } from "../middlewares/auth.middlewares.ts";
 
 
 export class TrainerController {

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { SessionController } from '../controllers/session.controller';
-import { authMiddleware } from "../middlewares/auth.middlewares";
-import { TrainerController } from "../controllers/trainer.controller";
+import { SessionController } from '../controllers/session.controller.ts';
+import { authMiddleware } from "../middlewares/auth.middlewares.ts";
+import { TrainerController } from "../controllers/trainer.controller.ts";
 
 
 export const trainerRoutes = Router();
