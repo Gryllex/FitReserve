@@ -1,7 +1,10 @@
 import dotenv from 'dotenv';
 
-dotenv.config()
+const NODE_ENV = process.env.NODE_ENV || 'development'; 
 
+const envFile = NODE_ENV === 'production' ? '.env.production' : '.env.development'
+
+dotenv.config({ path: envFile })
 
 
 // TYPES
@@ -10,49 +13,38 @@ type TConfig = {
   [key: string]: EnvironmentConfig;
 };
 
+type AppConfig = {
+    PORT: number
+};
+
+type DbConfig = {
+    url: string
+};
+
 type EnvironmentConfig = {
     app: AppConfig,
     db: DbConfig
 };
 
-type AppConfig = {
-    PORT: string | number
-};
 
-type DbConfig = {
-    URI: string
-}
-
-
-
-// ENVIRONMENTS - PRODUCTION OR DEVELOPMENT
-
-if (process.env.NODE_ENV === 'production') {
-    dotenv.config({ path: 'env.production' });
-} else {
-    dotenv.config({ path: 'env.development '});
-}
-
-const ENV = process.env.NODE_ENV ?? 'development';
-
-const CONFIG : TConfig = {
+const config : TConfig = {
     development: {
         app: {
-            PORT: process.env.PORT || 4000
+            PORT: Number(process.env.PORT) || 4000
         },
         db: {
-            URI: process.env.DATABASE_URI || ''
+            url: process.env.DATABASE_URL || ''
         }
     },
 
     production: {
         app: {
-            PORT: process.env.PORT || 8080
+            PORT: Number(process.env.PORT) || 8080
         },
         db: {
-            URI: process.env.DATABASE_URI || ''
+            url: process.env.DATABASE_URL || ''
         }
     }
 }
 
-export default CONFIG[ENV]
+export default config[NODE_ENV]

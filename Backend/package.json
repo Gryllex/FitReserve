@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn src/index.ts",
+    "dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
     "build": "prisma generate && tsc",
-    "start": "node dist/index.js"
+    "start": "cross-env NODE_ENV=production node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.13",
     "bcrypt": "^6.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.31.0",
     "globals": "^16.3.0",
     "prisma": "^6.11.1",

@@ -12,7 +12,7 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 
 // routes
@@ -23,5 +23,5 @@ app.use('/api/trainers', trainerRoutes);
 
 
 app.listen(PORT, () => {
-    console.log(`Server running on port http://localhost:${PORT}`);
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port http://localhost:${PORT}`);
 })
