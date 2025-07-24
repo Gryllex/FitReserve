@@ -3,22 +3,40 @@ import { validatePartialUser, validateUser } from "../schemas/userSchema.ts";
 import { UserModel } from "../models/user.model.ts";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { validateTrainerAvailability } from "../schemas/trainerSchema.ts";
+import { TrainerModel } from "../models/trainer.model.ts";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET as string;
+
+if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined in environment variables");
+}
 
 export class AuthenticationController {
 
     //  --- REGISTER ---
     static register = async (req: Request, res: Response) => {
-        const validated = validateUser(req.body);
+        const validatedUser = validateUser(req.body);
+        if (!validatedUser.success) {
+        return res.status(400).json({ error: validatedUser.error.issues });
+        }
 
-        if (!validated.success) {
-        return res.status(400).json({ error: validated.error.issues });
+        const { name, email, password, role } = validatedUser.data
+
+        // Validate before creating user
+        let validatedAvailability;
+        if (role === 'TRAINER'){
+            const { daysOfWeek, startTime, endTime } = req.body
+
+            validatedAvailability = validateTrainerAvailability({ daysOfWeek, startTime, endTime })
+            if (!validatedAvailability.success) {
+                return res.status(400).json({ 
+                    error: validatedAvailability.error.issues.map(issue => [issue.path, issue.message]) 
+                });
+            }
         }
 
         try {
-            const { name, email, password, role } = validated.data
-
             const existingUser = await UserModel.getUserByEmail( email );
             if (existingUser) {
                 return res.status(409).json({ error: 'Email already in use' });
@@ -34,12 +52,28 @@ export class AuthenticationController {
 
             const token = jwt.sign(
                 { userId: newUser.id, email: newUser.email, role: newUser.role},
-                JWT_SECRET!, 
+                JWT_SECRET, 
                 { expiresIn: '7d'}
             );
 
+            // If the new user is a trainer
+            if (newUser.role === 'TRAINER' && validatedAvailability) {
+                const { daysOfWeek, startTime, endTime } = validatedAvailability.data
+
+                await Promise.all(
+                    daysOfWeek.map((day: number) =>
+                        TrainerModel.createAvailability({
+                            trainerId: newUser.id,
+                            dayOfWeek: day,
+                            startTime,
+                            endTime
+                        })
+                    )
+                )
+            }
+
             return res.status(201).json({
-                message: 'User created',
+                message: role === 'TRAINER' ? 'Trainer registered' : 'User registered',
                 token
             });
 
@@ -83,7 +117,7 @@ export class AuthenticationController {
             });
 
         } catch(e) {
-            console.log(e);
+            console.error(e);
             res.status(500).json({ error: 'Error al iniciar sesion' })
         }
     }

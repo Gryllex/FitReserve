@@ -1,22 +1,23 @@
 import { Request, Response } from "express";
 import { TrainerModel } from "../models/trainer.model.ts";
-import { validatePartialTrainer, validateTrainer } from "../schemas/trainerSchema.ts";
+import { validateSingleAvailability } from "../schemas/trainerSchema.ts";
 import { AuthenticatedRequest } from "../middlewares/auth.middlewares.ts";
 
 
 export class TrainerController {
 
     static createAvailability = async (req: Request, res: Response) => {
-        const { trainerId, daysOfWeek, startTime, endTime } = req.body
+        const { trainerId, dayOfWeek, startTime, endTime } = req.body
 
-        const validated = validateTrainer({ trainerId, daysOfWeek, startTime, endTime})
-
+        if (isNaN(trainerId)) return res.status(400).json({ error: 'Trainer ID must be an ID'})
+            
+        const validated = validateSingleAvailability({ dayOfWeek, startTime, endTime})
         if (!validated.success) {
         return res.status(400).json({ error: validated.error.issues });
         }
 
         try {
-            const newAvailability = await TrainerModel.createAvailability( validated.data )
+            const newAvailability = await TrainerModel.createAvailability( {trainerId, dayOfWeek, startTime, endTime} )
             res.status(200).json(newAvailability)
         } catch(e) {
             console.log(e);
@@ -68,11 +69,11 @@ export class TrainerController {
 
         const trainerId = req.user.userId   // Trainer ID
         const id = Number(req.params.id)    // Availability ID
-        const { daysOfWeek, startTime, endTime } = req.body
+        const { dayOfWeek, startTime, endTime } = req.body
 
         if (!id || isNaN(id)) return res.status(400).json({ error: 'Availability ID is required' })
 
-        const validated = validatePartialTrainer({ daysOfWeek, startTime, endTime})
+        const validated = validateSingleAvailability({ dayOfWeek, startTime, endTime})
 
         if (!validated.success) {
         return res.status(400).json({ error: validated.error.issues });

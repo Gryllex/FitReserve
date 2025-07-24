@@ -5,7 +5,7 @@ export class TrainerModel {
     // Create availability for a trainer
     static async createAvailability( data: {
         trainerId: number,
-        daysOfWeek: number,
+        dayOfWeek: number,
         startTime: number,
         endTime: number
     }) {
@@ -25,7 +25,7 @@ export class TrainerModel {
         return await prisma.trainerAvailability.findFirst({
             where: {
                 trainerId,
-                daysOfWeek: dayOfWeek
+                dayOfWeek: dayOfWeek
             }
         });
     }
@@ -35,7 +35,7 @@ export class TrainerModel {
         id: number, 
         trainerId: number,
         data: Partial<{
-            daysOfWeek: number,
+            dayOfWeek: number,
             startTime: number,
             endTime: number
         }>

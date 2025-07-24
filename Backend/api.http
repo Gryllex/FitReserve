@@ -4,10 +4,13 @@ POST http://localhost:4000/api/auth/register
 Content-type: application/json
 
 {
-    "name" : "Prueba",
-    "email" : "prueba@gmail.com",
-    "password" : "prueba12345",
-    "role" : "CLIENT"
+    "name" : "PruebaTrainer",
+    "email" : "pruebatrainer@gmail.com",
+    "password" : "trainer12345",
+    "role" : "TRAINER",
+    "daysOfWeek" : [1, 2, 3, 4, 5],
+    "startTime" :  540,
+    "endTime" : 1020
 }
 
 
@@ -16,8 +19,12 @@ POST http://localhost:4000/api/auth/login
 Content-type: application/json
 
 {
-    "email" : "prueba@gmail.com",
-    "password" : "prueba12345"
+    "email" : "pruebatrainer@gmail.com",
+    "password" : "trainer12345"
 }
 
 
+### DELETE
+DELETE http://localhost:4000/api/user/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoicHJ1ZWJhdHJhaW5lckBnbWFpbC5jb20iLCJyb2xlIjoiVFJBSU5FUiIsImlhdCI6MTc1MzM2MTIwNywiZXhwIjoxNzUzOTY2MDA3fQ.tMsGr7IsXTt8yqs5669BYFmnJaCbpoWra_WaXn3P3D8
