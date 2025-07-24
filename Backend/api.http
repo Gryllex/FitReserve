@@ -25,6 +25,6 @@ Content-type: application/json
 
 
 ### DELETE
-DELETE http://localhost:4000/api/user/3
+DELETE http://localhost:4000/api/user/delete
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoicHJ1ZWJhdHJhaW5lckBnbWFpbC5jb20iLCJyb2xlIjoiVFJBSU5FUiIsImlhdCI6MTc1MzM2MTIwNywiZXhwIjoxNzUzOTY2MDA3fQ.tMsGr7IsXTt8yqs5669BYFmnJaCbpoWra_WaXn3P3D8
+Authorization: Bearer ADD-TOKEN

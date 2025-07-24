@@ -22,23 +22,24 @@ export class UserController {
     }
 
 
-    static updateUser = async (req: Request, res: Response) => {
-        const validated = validatePartialUser(req.body)
+    static updateUser = async (req: AuthenticatedRequest, res: Response) => {
+        if (!req.user){
+            return res.status(401).json({ error: 'Not authorized '})
+        }
+        const userId = req.user.userId;
         
+        const validated = validatePartialUser(req.body)
         if (!validated.success) {
         return res.status(400).json({ error: validated.error.issues });
         }
 
-        const id = Number(req.params.id)
-        if (isNaN(id)) { return res.status(400).json({ error: 'ID Inválido' })}
-
         try {
-            const userExists = await UserModel.getUserById(id)
+            const userExists = await UserModel.getUserById(userId)
             if (!userExists) {
                 return res.status(404).json({ error: 'User does not exists'})
             }
             
-            const updatedUser = await UserModel.updateUser( id, validated.data)
+            const updatedUser = await UserModel.updateUser( userId, validated.data)
             res.status(200).json(updatedUser)
 
         } catch(e) {
@@ -47,18 +48,19 @@ export class UserController {
         }
     }
 
-    static deleteUser = async (req: Request, res: Response) => {
-
-        const id = Number(req.params.id)
-        if (isNaN(id)) { return res.status(400).json({ error: 'ID Inválido' })}
+    static deleteUser = async (req: AuthenticatedRequest, res: Response) => {
+        if (!req.user){
+            return res.status(401).json({ error: 'Not authorized '})
+        }
+        const userId = req.user.userId;
 
         try {
-            const userExists = await UserModel.getUserById(id)
+            const userExists = await UserModel.getUserById(userId)
             if (!userExists) {
                 return res.status(404).json({ error: 'User does not exists'})
             }
             
-            const deletedUser = await UserModel.deleteUser(id)
+            const deletedUser = await UserModel.deleteUser(userId)
             res.status(200).json(deletedUser)
         } catch(e) {
             console.log(e)
@@ -70,7 +72,7 @@ export class UserController {
         if (!req.user){
             return res.status(401).json({ error: 'Not authorized '})
         }
-        const userId = req.user.userId; // Middleware pendiente, req.body.userId para que no de error
+        const userId = req.user.userId;
     
         try {
             const user = await UserModel.getUserById( userId )
