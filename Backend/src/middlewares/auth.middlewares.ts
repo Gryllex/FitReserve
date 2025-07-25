@@ -19,13 +19,16 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization
+    // const authHeader = req.headers.authorization
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')){
-        return res.status(401).json({ error: 'Token no proporcionado' })
-    }
+    // if (!authHeader || !authHeader.startsWith('Bearer ')){
+    //     return res.status(401).json({ error: 'No token provided' })
+    // }
 
-    const token = authHeader.split(' ')[1]
+    // const token = authHeader.split(' ')[1]
+    const token = req.cookies.token;
+
+    if (!token) { return res.status(401).json({ error: 'No token provided'})}
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as unknown as {
@@ -48,7 +51,7 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
 }
 
 
-// export const roleMiddleware = (allowedRoles: Role) => (
+// export const roleMiddleware = (allowedRoles: Role[]) => (
 //     req: AuthenticatedRequest,
 //     res: Response,
 //     next: NextFunction

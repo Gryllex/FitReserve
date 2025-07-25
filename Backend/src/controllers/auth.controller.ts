@@ -72,10 +72,14 @@ export class AuthenticationController {
                 )
             }
 
-            return res.status(201).json({
-                message: role === 'TRAINER' ? 'Trainer registered' : 'User registered',
-                token
-            });
+            return res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            })
+                .status(201).json({
+                message: role === 'TRAINER' ? 'Trainer registered' : 'User registered'});
 
         } catch(e) {
             console.error(e);
@@ -111,14 +115,24 @@ export class AuthenticationController {
                 {expiresIn: '7d'}
             )
 
-            return res.status(200).json({
-                message: 'User logged in',
-                token
-            });
+            return res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                maxAge: 7 * 24 * 60 * 60 * 1000
+                }).status(200).json({ message: 'User logged in' });
 
         } catch(e) {
             console.error(e);
             res.status(500).json({ error: 'Error al iniciar sesion' })
         }
+    }
+
+    static logout = (req: Request, res: Response) => {
+        return res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax'
+        }).status(200).json({ message: 'Looged out successfully'})
     }
 }

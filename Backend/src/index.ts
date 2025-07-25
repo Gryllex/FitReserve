@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import config from './config.js'
 import { userRoutes } from './routes/user.routes.ts';
 import { clientRoutes } from './routes/client.routes.ts';
@@ -14,8 +15,10 @@ const app = express();
 app.use(express.json());
 app.disable('x-powered-by')
 app.use(cors({
-    origin: 'http://localhost:8000'
-}));
+    origin: 'http://localhost:5173',
+    credentials: true,
+    }));
+app.use(cookieParser())
 
 
 
