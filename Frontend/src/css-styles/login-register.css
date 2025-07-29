@@ -1,0 +1,111 @@
+
+.navbar-logo-container {
+    padding-top: 20px ;
+    text-align: center;
+    display: block;
+}
+
+.loginLogo {
+    height: 120px;
+    border-radius: 16px;
+}
+
+.login-card {
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 80vw;
+    min-width: 400px;
+    max-width: 600px;
+}
+
+.login-card h2 {
+    text-align: center;
+}
+
+
+.login-form div {
+    width: 100%;
+    padding: 10px 0;
+}
+
+.login-form div:last-child {
+    text-align: center;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+}
+
+.login-submit {
+    width: 100%;
+    background: #ed8b4f;
+    color: #fff;
+}
+
+.login-form a {
+    color: #ed8b4f;
+}
+
+#register-trainer-checkbox {
+    max-width: min-content;
+    margin-right: 0.3rem;
+}
+
+#register-trainer-label {
+    display: flex;
+    align-items: center;
+}
+
+.trainerDays {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    text-align: center;
+    justify-content: space-evenly;
+    padding: 0;
+}
+
+.trainerDays input {
+    display: none;
+}
+
+.trainerDays label {
+    flex-basis: 20%;
+    color: #666;
+    outline: 1px solid #888;
+    border-radius: 16px;
+    padding: 4px 8px;
+}
+
+.trainerDays label:has(input[type='checkbox']:checked) {
+    color: #ed8b4f;
+    outline: 2px solid #ed8b4f;
+}
+
+.working-days-error {
+    /* display: none; */
+    color: #e46;
+    margin-bottom: 12px;
+    padding: 0;
+}
+#working-schedule {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.startTime, .endTime {
+    flex-grow: 1;
+}

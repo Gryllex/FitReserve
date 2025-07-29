@@ -13,6 +13,7 @@ header {
     align-items: center;
     padding-left: 2rem;
     padding-right: 2rem;
+    gap: 24px;
 }
 
 .left-header, .right-header{

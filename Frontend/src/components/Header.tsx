@@ -18,8 +18,8 @@ export function Header () {
                     {/* USER CREATE AND LOGIN */}
                     <nav className="right-header">
                         <Link to='/login' >Login</Link>
-                        <Link to='/signup' >
-                            <button>Sign Up</button>
+                        <Link to='/register' >
+                            <button>Register</button>
                         </Link>
                     </nav>
                 </div>

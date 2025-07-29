@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import '../css-styles/login-signup.css'
+import '../css-styles/login-register.css'
 import { useState } from 'react'
 
 type LoginData = {
@@ -44,7 +44,7 @@ export function LoginCard({ onLogin }: LoginCardProps ) {
                     </div>
                     <div>
                         <p>Still no account?</p>
-                        <Link to='/signup'>Create an account</Link>
+                        <Link to='/register'>Create an account</Link>
                     </div>
                 </form>
             </div>

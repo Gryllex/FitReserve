@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { LoginCard } from "../components/LoginCard"
 
 export default function Login () {
-
+    const navigate = useNavigate()
     const handleLogin = async ({ email, password }: {email: string, password: string}) => {
         try {
             const response = await fetch('http://localhost:4000/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-type' : 'application/json'},
-                body: JSON.stringify({ email, password}),
+                body: JSON.stringify({ email, password }),
                 credentials: 'include'
             })
 
@@ -19,6 +19,8 @@ export default function Login () {
 
             const data = await response.json()
             console.log('Login successful', data)
+
+            navigate('/account')
 
         } catch(e) {
             console.error('Error during login', e)

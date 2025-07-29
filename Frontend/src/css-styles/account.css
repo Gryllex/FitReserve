@@ -1,0 +1,15 @@
+
+.provisional-body {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    align-content: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.provisional-body button {
+    place-self: center;
+    max-width: 6rem;
+}
