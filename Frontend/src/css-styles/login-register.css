@@ -94,10 +94,11 @@
     outline: 2px solid #ed8b4f;
 }
 
-.working-days-error {
+.register-error {
     /* display: none; */
     color: #e46;
-    margin-bottom: 12px;
+    margin-top: 12px;
+    margin-bottom: 8px;
     padding: 0;
 }
 #working-schedule {

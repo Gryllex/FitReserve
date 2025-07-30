@@ -8,18 +8,17 @@ type LoginData = {
 }
 
 type LoginCardProps = {
-    onLogin: (data: LoginData) => void
+    onLogin: (data: LoginData) => void,
+    errorMessage?: string
 }
 
-export function LoginCard({ onLogin }: LoginCardProps ) {
+export function LoginCard({ onLogin, errorMessage }: LoginCardProps ) {
     const [userEmail, setUserEmail] = useState<string>('')
     const [userPassword, setUserPassword] = useState<string>('')
         
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         onLogin({ email: userEmail, password: userPassword})
-        console.log('Email: ', userEmail)
-        console.log('Password: ', userPassword)
     }
 
     return (
@@ -39,8 +38,15 @@ export function LoginCard({ onLogin }: LoginCardProps ) {
                             value={userPassword}
                             onChange={(e)=>setUserPassword(e.target.value)}/>
                     </div>
+
+                    { errorMessage && <p className='register-error'>{errorMessage}</p>}
+
                     <div>
-                        <button type="submit" className='login-submit'>Send</button>
+                        <button type="submit" 
+                            className='login-submit'
+                            disabled={!userEmail || !userPassword
+                        }>Send
+                        </button>
                     </div>
                     <div>
                         <p>Still no account?</p>

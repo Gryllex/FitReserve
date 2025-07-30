@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { validateTrainerAvailability } from "../schemas/trainerSchema.ts";
 import { TrainerModel } from "../models/trainer.model.ts";
+import { AuthenticatedRequest } from "../middlewares/auth.middlewares.ts";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -93,7 +94,7 @@ export class AuthenticationController {
         const validated = validatePartialUser(req.body);
 
         if (!validated.success) {
-        return res.status(400).json({ error: validated.error.issues });
+        return res.status(400).json({ error: 'Invalid email or password' });
         }
 
         try {
@@ -133,6 +134,10 @@ export class AuthenticationController {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax'
-        }).status(200).json({ message: 'Looged out successfully'})
+        }).status(200).json({ message: 'Loged out successfully'})
+    }
+
+    static authentication = (req: AuthenticatedRequest, res: Response) => {
+        res.status(200).json({ user: req.user })
     }
 }

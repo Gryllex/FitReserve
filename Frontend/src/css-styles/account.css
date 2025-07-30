@@ -1,4 +1,11 @@
 
+.loading-text {
+    text-align: center;
+    color: #fff;
+    font-size: 2rem;
+    padding-top: 32px;
+}
+
 .provisional-body {
     margin-top: 12px;
     display: flex;
@@ -13,3 +20,4 @@
     place-self: center;
     max-width: 6rem;
 }
+

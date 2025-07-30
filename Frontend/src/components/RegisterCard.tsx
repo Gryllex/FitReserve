@@ -17,12 +17,15 @@ type RegisterCardProps = {
     onRegister: (data: RegisterData) => void
 }
 
+type Role = 'CLIENT' | 'TRAINER'
+
 export function RegisterCard({ onRegister }: RegisterCardProps) {
     // User
     const [username, setUsername] = useState<string>('')
     const [userEmail, setUserEmail] = useState<string>('')
     const [userPassword, setUserPassword] = useState<string>('')
-    const [userRole, setUserRole] = useState<string>('USER')
+    const [confirmPassword, setConfirmPassword] = useState<string>('')
+    const [userRole, setUserRole] = useState<Role>('CLIENT')
 
     // Trainer 
     const [trainerDays, setTrainerDays] = useState<number[]>([])
@@ -30,16 +33,20 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
     const [trainerEndTime, setTrainerEndTime] = useState<number>()
 
     // Form
-    const [starTimeString, setStarTimeString] =useState<string>()
-    const [endTimeString, setEndTimeString] =useState<string>()
+    const [starTimeString, setStarTimeString] =useState<string>('')
+    const [endTimeString, setEndTimeString] =useState<string>('')
     const [showErrors, setShowErrors] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string>('')
 
+
+    // Check if user wants to register as trainer or as a client (default)
     const handleRole = () => {
-        const newRole = userRole === 'USER' ? 'TRAINER' : 'USER'
-        setUserRole(newRole)
-        console.log(newRole)
+        setUserRole((prev)=> prev === 'CLIENT' ? 'TRAINER' : 'CLIENT')
     }
 
+
+
+    // Trainer's schedule work days
     const weekDays = [
         { day: 'Monday', dayValue: 1},
         { day: 'Tuesday', dayValue: 2},
@@ -58,13 +65,16 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
         )   
     }
 
+
+
+    // Trainer's schedule start time and end time
     const handleTime = ( schedule: string, timeValue: string) => {
         const [hourStr, minuteStr] = timeValue.split(':')
         const hour = Number(hourStr)
         const minutes = Number(minuteStr)
 
         const time = hour*60 + minutes
-        console.log(time)
+
         if (schedule === 'startTime') {
             setTrainerStarTime(time) 
             setStarTimeString(timeValue)
@@ -75,18 +85,49 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
         }
     }
 
+
+
+    // Submit logic
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (trainerDays.length === 0) {
-            setShowErrors(true)
+        if (username.length < 4) {
+            setErrorMessage('Username must be at least 4 characters long');
+            setShowErrors(true);
             return
         }
+        
+        if (userPassword !== confirmPassword) {
+            setErrorMessage('Password & confirm password must be equal');
+            setShowErrors(true);
+            return
+        }
+        
+        if (userRole === 'TRAINER' && trainerDays.length === 0) {
+            setErrorMessage('Must select at least day');
+            setShowErrors(true);
+            return
+        }
+
+        if (userRole === 'TRAINER' && 
+            (!trainerStartTime || !trainerEndTime || trainerStartTime >= trainerEndTime)) {
+            setErrorMessage('Please set a valid schedule (start must be before end)');
+            setShowErrors(true);
+            return
+        }
+
+        setErrorMessage('');
+        setShowErrors(false);
+
+
         const registerUser = { name: username, email: userEmail, password: userPassword, role: 'CLIENT'}
         const registerTrainer = { name: username, email: userEmail, password: userPassword, role: 'TRAINER', daysOfWeek: trainerDays, startTime: trainerStartTime, endTime: trainerEndTime }
         onRegister( userRole === 'TRAINER' ? registerTrainer : registerUser)
     }
 
+
+
+    // Render HTML
     return (
         <div className="login-card">
             <h2>Register</h2>
@@ -102,6 +143,7 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                         />
                     </div>
 
+
                     {/* Email */}
                     <div className='login-form-email'>
                         <label>Email</label>
@@ -110,6 +152,7 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                         onChange={(e) => setUserEmail(e.target.value)}
                         />
                     </div>
+
 
                     {/* Password */}
                     <div className='login-form-password'>
@@ -121,8 +164,11 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                     </div>
                     <div className='login-form-password'>
                         <label>Confirm password</label>
-                        <input required type="password" className='register-confirm-password' placeholder='**********' />
+                        <input required type="password" className='register-confirm-password' placeholder='**********'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
+
 
                     {/* Register as trainer checkbox */}
                     <div>
@@ -132,6 +178,7 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                             />
                             Register as trainer</label>
                     </div>
+
 
                     {/* Trainer availability days, starTime, endTime */}
                     { userRole === 'TRAINER' && 
@@ -149,11 +196,6 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                             ))}
                         </div>
 
-                        { showErrors && trainerDays.length === 0 &&
-                            <div className='working-days-error'>
-                                <p>At least 1 day must be selected</p>
-                            </div>
-                        }
                         <p>Working Schedule</p>
                         <div id='working-schedule'>
                             <label className='startTime'>
@@ -168,7 +210,15 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                                     onChange={(e)=>handleTime('endTime', e.target.value)} />
                             </label>
                         </div>
-                      </>}
+                      </>
+                    }
+
+
+                    {/* Error messages */}
+                    { showErrors &&
+                        <p className='register-error'>{errorMessage}</p>
+                    }
+
 
                     {/* Submit button */}
                     <div>

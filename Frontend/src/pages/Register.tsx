@@ -1,8 +1,20 @@
 import { Link, useNavigate } from "react-router-dom"
 import { RegisterCard } from "../components/RegisterCard"
+import { useAuth } from "../hooks/useAuth"
+import { useEffect } from "react"
+
 
 export default function Register () {
+    // Redirect to /account if user is already logged in
     const navigate = useNavigate()
+    const { isAuthenticated, loading } = useAuth()
+    
+    useEffect(()=>{
+        if (isAuthenticated) {
+            navigate('/account')
+        }
+    },[isAuthenticated, navigate])
+
     const handleRegister = async ({ name, email, password, role, daysOfWeek, startTime, endTime }:
       { name: string, email: string, password: string, role: string, daysOfWeek?: Array<number>, startTime?: number, endTime?: number}) => {
         try {
@@ -16,20 +28,21 @@ export default function Register () {
                 credentials: 'include'
             })
 
+            const data = await response.json()
             if (!response.ok) {
-                const error = await response.json()
-                throw new Error(error)
+                throw new Error(data)
             }
 
-            const data = await response.json()
             console.log('Register successful', data)
-
             navigate('/account')
 
         } catch(e) {
             console.error('Error during register', e)
         }
     }
+
+    if (loading) return <p className="loading-text">Loading...</p>
+
     return(
         <>
             <div className="navbar-logo-container">

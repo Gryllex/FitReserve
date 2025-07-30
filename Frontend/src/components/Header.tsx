@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import '../css-styles/Header.css'
+import { useAuth } from "../hooks/useAuth";
 
 export function Header () {
+    const { isAuthenticated } = useAuth()
+
     return (
             <header>
                 <div className="header-wrapper">
@@ -17,10 +20,18 @@ export function Header () {
 
                     {/* USER CREATE AND LOGIN */}
                     <nav className="right-header">
-                        <Link to='/login' >Login</Link>
-                        <Link to='/register' >
-                            <button>Register</button>
-                        </Link>
+
+                        { !isAuthenticated && <>
+                            <Link to='/login'>Login</Link>
+                            <Link to='/register' >
+                                <button>Register</button>
+                            </Link>
+                        </> }
+                        { isAuthenticated &&
+                            <Link to='/account'>
+                                <button>Account</button>
+                            </Link>
+                        }
                     </nav>
                 </div>
             </header>

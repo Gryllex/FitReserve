@@ -1,26 +1,43 @@
 import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../hooks/useAuth"
+import { useEffect } from "react"
 import '../css-styles/account.css'
 
 export default function Account () {
     const navigate = useNavigate()
-    const handleLogout = async () => {
-        const response = await fetch('http://localhost:4000/api/auth/logout', {
-            method: 'POST',
-            credentials: "include"
-        })
+    const { isAuthenticated, loading, logoutUser }= useAuth()
 
-        if (!response.ok) {
-            const error = await response.json()
-            throw new Error(error)
+    useEffect(()=>{
+        if (!loading && !isAuthenticated) {
+            navigate('/login')
         }
+    }, [loading, isAuthenticated])
 
-        const data = await response.json()
-        console.log('Logout successfully', data)
+    const handleLogout = async () => {
+        try {
+            const res = await fetch('http://localhost:4000/api/auth/logout', {
+                method: 'POST',
+                credentials: "include"
+            })
 
-        
-        navigate('/')
+            if (!res.ok) {
+                const error = await res.json()
+                throw new Error(error.message)
+            }
 
-    }
+            const data = await res.json()
+
+            logoutUser()
+            console.log('Logout successfully', data)
+            navigate('/')
+
+        } catch (e) {
+            alert('Logout error')
+            console.error(e)
+        }
+    };
+
+    if (loading) return <p className="loading-text">Loading...</p>
 
     return(
         <>
