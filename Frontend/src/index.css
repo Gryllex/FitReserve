@@ -60,3 +60,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.login-register-page-container {
+  background-color: #282828;
+  min-height: 100%;
+}

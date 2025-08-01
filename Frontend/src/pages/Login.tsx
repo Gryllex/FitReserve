@@ -7,14 +7,13 @@ export default function Login () {
     // Redirect to /account if user is already logged in
     const navigate = useNavigate()
     const { isAuthenticated, loading, loginUser } = useAuth()
-    
-    useEffect(()=>{
-        if (isAuthenticated) {
-            navigate('/account')
-        }
-    },[isAuthenticated, navigate])
-
     const [errorMessage, setErrorMessage] = useState<string>()
+
+    useEffect(()=>{
+        if (!loading && isAuthenticated) {
+            navigate('/account', { replace: true })
+        }
+    },[isAuthenticated, loading, navigate])
 
     const handleLogin = async ({ email, password }: {email: string, password: string}) => {
         try {
@@ -26,13 +25,13 @@ export default function Login () {
             })
 
             const data = await response.json()
+            
             if (!response.ok){
                 throw new Error(data.error || 'Login failed')
             }
 
             loginUser(data.user)
-            console.log('Login successful', data)
-            navigate('/account')
+            console.log('Login successful', data)      
 
         } catch {
             setErrorMessage('Invalid email or password')
@@ -43,13 +42,13 @@ export default function Login () {
     if (loading) return <p className="loading-text">Loading...</p>
 
     return(
-        <>
+        <div className="login-register-page-container">
             <div className="navbar-logo-container">
                 <Link to='/'>
                     <img className="loginLogo" src="https://static.vecteezy.com/system/resources/previews/026/109/417/original/gym-logo-fitness-health-muscle-workout-silhouette-design-fitness-club-free-vector.jpg" alt="Logo" />
                 </Link>
             </div>
             < LoginCard onLogin={handleLogin} errorMessage={errorMessage} />
-        </>
+        </div>
     )
 }

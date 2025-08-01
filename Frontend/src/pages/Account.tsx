@@ -1,17 +1,10 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
-import { useEffect } from "react"
-import '../css-styles/account.css'
+import { AccountDashboard } from "../components/AccounDashboard"
 
 export default function Account () {
     const navigate = useNavigate()
-    const { isAuthenticated, loading, logoutUser }= useAuth()
-
-    useEffect(()=>{
-        if (!loading && !isAuthenticated) {
-            navigate('/login')
-        }
-    }, [loading, isAuthenticated])
+    const { logoutUser } = useAuth()
 
     const handleLogout = async () => {
         try {
@@ -37,19 +30,9 @@ export default function Account () {
         }
     };
 
-    if (loading) return <p className="loading-text">Loading...</p>
-
     return(
         <>
-            <div className="navbar-logo-container">
-                <Link to='/'>
-                    <img className="loginLogo" src="https://static.vecteezy.com/system/resources/previews/026/109/417/original/gym-logo-fitness-health-muscle-workout-silhouette-design-fitness-club-free-vector.jpg" alt="Logo" />
-                </Link>
-            </div>
-            <div className="provisional-body">Protected route for logged users
-                <button onClick={handleLogout}>Logout</button>
-            </div>
-
+            <AccountDashboard handleLogout={handleLogout} />
         </>
     )
 }

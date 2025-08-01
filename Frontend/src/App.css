@@ -5,25 +5,23 @@
   margin: 0;
   padding: 0;
 }
-#root {
+
+html, body, #root {
+  height: 100%;
   width: 100%;
+  font-family: inherit;
+  line-height: inherit;
+  background-color: inherit;
+  color: inherit;
 }
-
-
-.pageContainer {
-    background: #282828;
-    min-height: 100vh;
-    padding-bottom: 16px;
-}
-
 
 .navbar-logo-container {
-    padding-top: 20px ;
-    text-align: center;
-    display: block;
+  padding-top: 20px;
+  text-align: center;
+  display: block;
 }
 
 .loginLogo {
-    height: 120px;
-    border-radius: 16px;
+  height: 120px;
+  border-radius: 16px;
 }

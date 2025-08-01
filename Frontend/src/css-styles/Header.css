@@ -1,8 +1,9 @@
 
-header {
+.main-page-header {
     background: #3f3f3f;
     position: sticky;
     top: 0;
+    box-shadow: 0 2px 10px #2f2f2f;
 }
 
 .header-wrapper {
@@ -35,10 +36,16 @@ a {
     color: #fff;
 }
 
+.main-page-header {
+        animation: header-movement both;
+        animation-timeline: scroll();
+        animation-range-start: 0px;
+        animation-range-end: 250px;
+    }
 
 /* ---------------- HEADER QUERIES ---------------- */
 
-@media screen and (min-width: 700px) {
+/* @media screen and (min-width: 700px) {
 
     header {
         animation: header-movement both;
@@ -46,7 +53,7 @@ a {
         animation-range-start: 0px;
         animation-range-end: 250px;
     }
-}
+} */
 
 
 

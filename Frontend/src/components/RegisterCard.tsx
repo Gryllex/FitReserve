@@ -29,11 +29,11 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
 
     // Trainer 
     const [trainerDays, setTrainerDays] = useState<number[]>([])
-    const [trainerStartTime, setTrainerStarTime] = useState<number>()
+    const [trainerStartTime, setTrainerStartTime] = useState<number>()
     const [trainerEndTime, setTrainerEndTime] = useState<number>()
 
     // Form
-    const [starTimeString, setStarTimeString] =useState<string>('')
+    const [startTimeString, setStartTimeString] =useState<string>('')
     const [endTimeString, setEndTimeString] =useState<string>('')
     const [showErrors, setShowErrors] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -68,18 +68,18 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
 
 
     // Trainer's schedule start time and end time
-    const handleTime = ( schedule: string, timeValue: string) => {
+    const handleTime = ( type: 'startTime' | 'endTime', timeValue: string) => {
         const [hourStr, minuteStr] = timeValue.split(':')
         const hour = Number(hourStr)
         const minutes = Number(minuteStr)
 
         const time = hour*60 + minutes
 
-        if (schedule === 'startTime') {
-            setTrainerStarTime(time) 
-            setStarTimeString(timeValue)
+        if (type === 'startTime') {
+            setTrainerStartTime(time) 
+            setStartTimeString(timeValue)
         } 
-        if (schedule === 'endTime') {
+        if (type === 'endTime') {
             setTrainerEndTime(time)
             setEndTimeString(timeValue)
         }
@@ -98,7 +98,7 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
         }
         
         if (userPassword !== confirmPassword) {
-            setErrorMessage('Password & confirm password must be equal');
+            setErrorMessage('Passwords do not match');
             setShowErrors(true);
             return
         }
@@ -147,7 +147,7 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                     {/* Email */}
                     <div className='login-form-email'>
                         <label>Email</label>
-                        <input required type="text" className='register-email' placeholder='example@gmail.com'
+                        <input required type="email" className='register-email' placeholder='example@gmail.com'
                         value={userEmail}
                         onChange={(e) => setUserEmail(e.target.value)}
                         />
@@ -180,7 +180,7 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                     </div>
 
 
-                    {/* Trainer availability days, starTime, endTime */}
+                    {/* Trainer availability days, startTime, endTime */}
                     { userRole === 'TRAINER' && 
                       <>
                         <p>Working days</p>
@@ -200,7 +200,7 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                         <div id='working-schedule'>
                             <label className='startTime'>
                                 <input required type="time"
-                                    value={starTimeString}
+                                    value={startTimeString}
                                     onChange={(e)=>handleTime('startTime', e.target.value)} />
                             </label>
                             →
