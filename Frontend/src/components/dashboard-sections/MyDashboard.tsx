@@ -49,8 +49,8 @@ export function MyDashboard() {
     },[]);
 
     useEffect(()=>{
-        if (success) setSuccess('')
-    },[changePassword,confirmChangePassword])
+        if (success && changePassword.length > 0) setSuccess('')
+    },[changePassword])
 
 
     const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
