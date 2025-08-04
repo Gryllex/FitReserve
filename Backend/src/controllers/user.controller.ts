@@ -2,18 +2,42 @@ import { UserModel } from "../models/user.model.ts"
 import { Request, Response } from "express"
 import { validateUser, validatePartialUser } from "../schemas/userSchema.ts";
 import { AuthenticatedRequest } from "../middlewares/auth.middlewares.ts";
+import { Role } from "../enum/enum"
+import bcrypt from 'bcrypt';
+
+type updateUserData = { 
+        name?: string, 
+        email?: string, 
+        password?: string, 
+        role?: Role
+    }
 
 export class UserController {
 
     static createUser = async (req: Request, res: Response) => {
-        const validated = validateUser(req.body)
+        const validatedUser = validateUser(req.body)
 
-        if (!validated.success) {
-        return res.status(400).json({ error: validated.error.issues });
+        if (!validatedUser.success) {
+        return res.status(400).json({ error: validatedUser.error.issues });
         }
 
+        const { name, email, password, role} = validatedUser.data
+
         try {
-            const newUser = await UserModel.createUser( validated.data )
+            const existingUser = await UserModel.getUserByEmail( email );
+            if (existingUser) {
+                return res.status(409).json({ error: 'Email already in use' });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10)
+
+            const newUser = await UserModel.createUser( {
+                name,
+                email,
+                password: hashedPassword,
+                role
+            });
+
             res.status(201).json(newUser)
         } catch(e) {
             console.error(e);
@@ -33,13 +57,22 @@ export class UserController {
         return res.status(400).json({ error: validated.error.issues });
         }
 
+        const { name, email, password, role } = validated.data
+
         try {
             const userExists = await UserModel.getUserById(userId)
             if (!userExists) {
-                return res.status(404).json({ error: 'User does not exists'})
+                return res.status(404).json({ error: 'User does not exist'})
             }
             
-            const updatedUser = await UserModel.updateUser( userId, validated.data)
+            const newData: updateUserData = { name, email, role }
+
+            if (password) {
+                const hashedPassword = await bcrypt.hash(password, 10)
+                newData.password = hashedPassword
+            }
+
+            const updatedUser = await UserModel.updateUser( userId, newData)
             res.status(200).json(updatedUser)
 
         } catch(e) {
@@ -57,7 +90,7 @@ export class UserController {
         try {
             const userExists = await UserModel.getUserById(userId)
             if (!userExists) {
-                return res.status(404).json({ error: 'User does not exists'})
+                return res.status(404).json({ error: 'User does not exist'})
             }
             
             const deletedUser = await UserModel.deleteUser(userId)
@@ -76,11 +109,15 @@ export class UserController {
     
         try {
             const user = await UserModel.getUserById( userId )
-            res.status(200).json({ user })
+            if (!user) return res.status(404).json({ error: 'User not found'})
+
+            // Return a safe user copy without the hashed password
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { password, ...safeUser } = user
+            res.status(200).json({ user: safeUser })
         } catch(e) {
             console.log('[getUserById] Error: ', e)
             res.status(400).json({ error: 'Error trying to get user'})
         }
-    
     }
 }
