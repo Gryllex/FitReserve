@@ -98,3 +98,52 @@
     border-top-left-radius: 0;
     min-height: 700px;
 }
+
+
+
+
+
+/* MY-DASHBOARD COMPONENT */
+
+.dashboard-user-data {
+    list-style: none;
+    padding: 12px;
+}
+
+.dashboard-user-data h4 {
+    font-weight: normal;
+    margin-bottom: 6px;
+}
+
+.dashboard-user-data li {
+    margin-bottom: 18px;
+}
+
+.dashboard-user-data li :is(p, input) {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    min-height: 2.7rem;
+    line-height: 2rem;
+    padding: 6px 12px;
+    outline: none;
+    border: none;
+}
+
+.dashboard-user-data a {
+    color: #ed8b4f;
+}
+
+.dashboard-user-data a:hover {
+    color: rgb(255, 109, 24);
+}
+
+.dashboard-error {
+    color: #e46;
+}
+
+.dashboard-success {
+    color: #4e6;
+}
