@@ -31,7 +31,33 @@ export class TrainerModel {
     }
 
     // Update availability 
+
     static async updateAvailability(
+        trainerId: number,
+        { daysOfWeek, startTime, endTime } : {
+            daysOfWeek: number[],
+            startTime: number,
+            endTime: number
+        }
+    ) {
+
+        await prisma.trainerAvailability.deleteMany({
+            where: { trainerId }
+        })
+
+        await prisma.trainerAvailability.createMany({
+
+            data: daysOfWeek.map(day => ({
+                trainerId,
+                dayOfWeek: day,
+                startTime,
+                endTime
+            }))
+        })
+    }
+
+
+    static async updateSingleAvailability(
         id: number, 
         trainerId: number,
         data: Partial<{

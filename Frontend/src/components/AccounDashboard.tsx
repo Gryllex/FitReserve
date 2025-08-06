@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 import { MyDashboard } from './dashboard-sections/MyDashboard'
 import { BookedSessions } from './dashboard-sections/BookedSessions'
 import { WorkingSchedule } from './dashboard-sections/WorkingSchedule'
-import { BookSessions } from './dashboard-sections/BookSession'
+import { BookSession } from './dashboard-sections/BookSession'
 
 type LogoutProps = {
     handleLogout: () => void
@@ -60,7 +60,7 @@ export function AccountDashboard({ handleLogout }: LogoutProps ) {
                 <main className='dashboard-main'>
                         { activeSection === 'My Dashboard' && <MyDashboard />}
                         { activeSection === 'Booked Sessions' && <BookedSessions />}
-                        { activeSection === 'Book Session' && <BookSessions />}
+                        { activeSection === 'Book Session' && <BookSession />}
                         { activeSection === 'Working Schedule' && <WorkingSchedule />}
                 </main>
             </div>

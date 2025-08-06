@@ -1,24 +1,11 @@
 
+
+
 .loading-text {
     text-align: center;
     color: #fff;
     font-size: 2rem;
     padding-top: 32px;
-}
-
-.provisional-body {
-    margin-top: 12px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-    align-content: center;
-    text-align: center;
-    gap: 12px;
-}
-
-.provisional-body button {
-    place-self: center;
-    max-width: 6rem;
 }
 
 .dashboard-container {
@@ -36,12 +23,13 @@
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
-    flex-basis: 200px;
+    flex-basis: 300px;
     text-align: center;
     padding: 16px 0 48px 0;
-    box-shadow: 0px 0px 12px 0px #6d6d6d;
+    box-shadow: 0px 0px 10px 0px #6d6d6d;
     z-index: 30;
 }
+
 
 .dashboard-sidebar nav {
     width: 100%;
@@ -59,8 +47,24 @@
     width: 100%;
 }
 
-.dashboard-sidebar button {
-    background-color: #f3f3f3;
+.dashboard-list-item:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.dashboard-sidebar button, .dashboard-user-data button, .update-working-schedule button {
+    color: #ed8b4f;
+    background-color: #fff;
+    outline: 1px solid #ed8b4f;
+}
+
+.dashboard-sidebar button:hover,
+.dashboard-user-data button:hover, 
+.update-working-schedule button:hover {
+    border-color: #ed8b4f;
+    background-color: #ed8b4f;
+    color: #fff;
+    transition: all .3s ease-out;
 }
 
 .dashboard-selected-list-item {
@@ -79,7 +83,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex-grow: 1;
+    flex-basis: 600px;
+    flex-grow: 5;
     padding-right: 36px;
     padding-bottom: 36px;
 }
@@ -91,7 +96,7 @@
 
 .dashboard-main {
     flex-grow: 1;
-    background-color: #e3e3e3;
+    background-color: #f0f0f0;
     padding: 16px;
     border-radius: 16px;
     border-bottom-left-radius: 0;
@@ -116,13 +121,16 @@
 }
 
 .dashboard-user-data li {
-    margin-bottom: 18px;
+    margin-bottom: 24px;
+}
+
+.dashboard-user-data li p {
+    color: #8e8e8e;
 }
 
 .dashboard-user-data li :is(p, input) {
     display: block;
     width: 100%;
-    margin-bottom: 12px;
     background-color: #f8f8f8;
     border-radius: 12px;
     min-height: 2.7rem;
@@ -140,10 +148,85 @@
     color: rgb(255, 109, 24);
 }
 
-.dashboard-error {
-    color: #e46;
+.error-message {
+    color: #e34;
 }
 
-.dashboard-success {
+.success-message {
     color: #2d6;
 }
+
+
+/* WORKING-SCHEDULE COMPONENT */
+
+.current-working-schedule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.update-working-schedule {
+    background-color: #f8f8f8;
+    padding: 16px 12px;
+    border-radius: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.update-working-schedule p {
+    margin-top: 16px;
+}
+
+.update-working-schedule [type="checkbox"]:checked + span {
+  color: #ed8b4f;
+  font-weight: bold;
+}
+
+.update-working-schedule span:hover {
+  color: #ed8b4f;
+  font-weight: bold;
+}
+
+.update-working-schedule span::selection {
+  background-color: transparent;
+}
+
+
+.trainerDays, #working-schedule {
+    margin-top: 12px;
+    margin-bottom: 24px;
+}
+
+#working-schedule {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.startTime, .endTime {
+    flex-grow: 1;
+}
+
+#working-schedule input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+}
+
+.trainerDays label {
+    background-color: #fff;
+}
+
+.trainerDays label {
+    min-width: 8rem;
+    max-width: 10rem;
+}
+
+.update-working-schedule button {
+    display: block;
+    margin: auto;
+    margin-bottom: 16px;
+}
+
+
