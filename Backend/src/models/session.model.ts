@@ -37,6 +37,9 @@ export class SessionModel {
             include: {
                 trainer: {
                     select: { name: true, email: true}
+                }, 
+                client: {
+                    select: { name: true, email: true}
                 }
             }
         })
@@ -47,6 +50,9 @@ export class SessionModel {
             where: { clientId, cancelled: false },
             orderBy: { date: 'asc'},
             include: {
+                trainer: {
+                    select: { name: true, email: true}
+                }, 
                 client: {
                     select: { name: true, email: true}
                 }

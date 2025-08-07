@@ -7,7 +7,7 @@ import { useEffect } from "react"
 export default function Register () {
     // Redirect to /account if user is already logged in
     const navigate = useNavigate()
-    const { isAuthenticated, loading } = useAuth()
+    const { isAuthenticated, loading, loginUser } = useAuth()
     
     useEffect(()=>{
         if (!loading && isAuthenticated) {
@@ -35,6 +35,9 @@ export default function Register () {
             }
 
             console.log('Register successful', data)
+
+            loginUser(data.user);
+            navigate('/account');
 
         } catch(e) {
             console.error('Error during registration', e)

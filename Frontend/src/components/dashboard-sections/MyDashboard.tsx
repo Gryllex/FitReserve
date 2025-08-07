@@ -56,7 +56,7 @@ export function MyDashboard() {
     const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (changePassword !== confirmChangePassword) {
-            setError('Passwords do not match')
+            setError('Passwords must match')
             return
         } else {
             setError('')
@@ -132,11 +132,11 @@ export function MyDashboard() {
                         value={confirmChangePassword}
                         onChange={(e) => setConfirmChangePassword(e.target.value)}/>
 
-                        <button type="submit" >Confirm password change</button>   
+                        <button type="submit" className="dashboard-button" >Confirm password change</button>   
                     </>}
                 </form>
             </li>
-            { error && <p className="dashboard-error">{error}</p>}
+            { error && <p className="error-message">{error}</p>}
             { success && <p className="dashboard-success">{success}</p>}
         </ul>
     )

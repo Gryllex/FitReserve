@@ -193,7 +193,7 @@ export function WorkingSchedule() {
                 { updateData && 
                     <form onSubmit={handleSubmit}>
                         <RegisterTrainer onChange={setNewSchedule} />
-                        <button type="submit">Update schedule</button>    
+                        <button type="submit" className="dashboard-button">Update schedule</button>    
                     </form>
                 }
 

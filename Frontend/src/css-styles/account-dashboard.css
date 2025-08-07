@@ -52,15 +52,15 @@
   cursor: pointer;
 }
 
-.dashboard-sidebar button, .dashboard-user-data button, .update-working-schedule button {
+.dashboard-sidebar button, .dashboard-button {
     color: #ed8b4f;
     background-color: #fff;
     outline: 1px solid #ed8b4f;
+    margin-top: 16px;
 }
 
 .dashboard-sidebar button:hover,
-.dashboard-user-data button:hover, 
-.update-working-schedule button:hover {
+.dashboard-button:hover {
     border-color: #ed8b4f;
     background-color: #ed8b4f;
     color: #fff;
@@ -156,6 +156,62 @@
     color: #2d6;
 }
 
+.change-password {
+    margin-bottom: 12px;
+}
+
+
+/* BOOKED SESSIONS COMPONENT */
+
+.dashboard-session-container, .update-working-schedule  {
+    background-color: #f8f8f8;
+    padding: 16px 12px;
+    border-radius: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 16px 24px;
+}
+
+.dashboard-session-container {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+
+.dashboard-session-container h4 {
+    font-weight: normal;
+    margin-bottom: 12px;
+}
+
+.dashboard-session .dashboard-button {
+    margin: 0;
+    padding: 6px 8px;
+}
+
+.dashboard-session-details {
+    display: flex;
+    flex-grow: 1;
+    gap: 16px;
+    align-items: center;
+}
+
+.dashboard-session-details p {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+
+}
+
+
+
+
+
+
+
+
+
+
 
 /* WORKING-SCHEDULE COMPONENT */
 
@@ -165,13 +221,6 @@
     gap: 16px;
 }
 
-.update-working-schedule {
-    background-color: #f8f8f8;
-    padding: 16px 12px;
-    border-radius: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
-}
 
 .update-working-schedule p {
     margin-top: 16px;
@@ -194,7 +243,7 @@
 
 .trainerDays, #working-schedule {
     margin-top: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
 }
 
 #working-schedule {

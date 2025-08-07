@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom'
 import '../css-styles/account-dashboard.css'
 import { useEffect, useState } from 'react'
-import { useAuth } from '../hooks/useAuth'
 import { MyDashboard } from './dashboard-sections/MyDashboard'
 import { BookedSessions } from './dashboard-sections/BookedSessions'
 import { WorkingSchedule } from './dashboard-sections/WorkingSchedule'
 import { BookSession } from './dashboard-sections/BookSession'
+import type { User } from '../types/types'
 
 type LogoutProps = {
-    handleLogout: () => void
+    handleLogout: () => void,
+    user: User | null
 }
 
 const clientSections = [
@@ -16,12 +17,11 @@ const clientSections = [
 ]
 
 const trainerSections = [
-    'My Dashboard', 'Working Schedule', 'Booked Sessions'
+    'My Dashboard', 'Booked Sessions', 'Working Schedule'
 ]
 
 
-export function AccountDashboard({ handleLogout }: LogoutProps ) {
-    const { user } = useAuth()
+export function AccountDashboard({ handleLogout, user }: LogoutProps ) {
     const [sidebarSections, setSidebarSections] = useState<string[]>([]) 
     const [activeSection, setActiveSection] = useState<string>('My Dashboard')
 
@@ -59,7 +59,7 @@ export function AccountDashboard({ handleLogout }: LogoutProps ) {
                 <header className='dashboard-header'>Welcome! {}</header>
                 <main className='dashboard-main'>
                         { activeSection === 'My Dashboard' && <MyDashboard />}
-                        { activeSection === 'Booked Sessions' && <BookedSessions />}
+                        { activeSection === 'Booked Sessions' && <BookedSessions user={user} />}
                         { activeSection === 'Book Session' && <BookSession />}
                         { activeSection === 'Working Schedule' && <WorkingSchedule />}
                 </main>
