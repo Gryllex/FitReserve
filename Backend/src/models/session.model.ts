@@ -32,7 +32,7 @@ export class SessionModel {
 
     static async getTrainerSessions (trainerId: number) {
         return await prisma.session.findMany({
-            where: { trainerId, cancelled: false },
+            where: { trainerId },
             orderBy: { date: 'asc'},
             include: {
                 trainer: {
@@ -47,7 +47,7 @@ export class SessionModel {
 
     static async getClientSessions (clientId: number) {
         return await prisma.session.findMany({
-            where: { clientId, cancelled: false },
+            where: { clientId },
             orderBy: { date: 'asc'},
             include: {
                 trainer: {

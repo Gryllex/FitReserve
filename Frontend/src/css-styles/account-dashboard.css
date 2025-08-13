@@ -18,6 +18,9 @@
 /* ----- SIDEBAR ----- */
 
 .dashboard-sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,12 +59,11 @@
     color: #ed8b4f;
     background-color: #fff;
     outline: 1px solid #ed8b4f;
-    margin-top: 16px;
 }
 
 .dashboard-sidebar button:hover,
 .dashboard-button:hover {
-    border-color: #ed8b4f;
+    border-color: transparent;
     background-color: #ed8b4f;
     color: #fff;
     transition: all .3s ease-out;
@@ -102,11 +104,23 @@
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     min-height: 700px;
+    min-width: 482px;
 }
 
 
+.dashboard-section {
+    padding: 16px 12px;
+    border-radius: 12px;
+}
 
+.dashboard-section h2 {
+    margin-bottom: 16px;
+}
 
+.dashboard-divisor {
+    border-bottom: 1px solid #ccc;
+    margin: 16px 0px;
+}
 
 /* MY-DASHBOARD COMPONENT */
 
@@ -116,7 +130,7 @@
 }
 
 .dashboard-user-data h4 {
-    font-weight: normal;
+    font-weight: 500;
     margin-bottom: 6px;
 }
 
@@ -163,27 +177,40 @@
 
 /* BOOKED SESSIONS COMPONENT */
 
-.dashboard-session-container, .update-working-schedule  {
+.dashboard-booked-sessions-container {
+    display: flex;
+    flex-direction: column;
+    height: 780px;
+}
+
+
+.dashboard-session-container-wrapper {
+    margin: 12px 0;
+    padding: 0 12px 0 12px;
+    margin-top: 24px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+
+.dashboard-session-container  {
     background-color: #f8f8f8;
     padding: 16px 12px;
     border-radius: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
     padding: 16px 24px;
-}
-
-.dashboard-session-container {
-    margin-top: 24px;
     margin-bottom: 24px;
 }
 
+.dashboard-session-container:last-child {
+    margin-bottom: 0;
+}
 
 .dashboard-session-container h4 {
-    font-weight: normal;
-    margin-bottom: 12px;
+    font-weight: 500;
 }
 
 .dashboard-session .dashboard-button {
+    outline: 1px solid #ed8b4f;
     margin: 0;
     padding: 6px 8px;
 }
@@ -203,12 +230,27 @@
 
 }
 
+.dashboard-filters-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    gap: 16px;
+}
 
+.dashboard-filters-container button {
+    font-weight: normal;
+    border: none;
+    border-bottom: 2px solid #ed8b4f;
+    outline: none;
+}
 
+.dashboard-filters-container button:hover {
+    background-color: #e8e8e8;
+}
 
-
-
-
+.dashboard-selected-filter-button {
+    color: #ed8b4f;
+}
 
 
 
@@ -218,12 +260,21 @@
 .current-working-schedule {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 24px;
 }
 
+.update-working-schedule  {
+    background-color: #f8f8f8;
+    padding: 16px 12px;
+    border-radius: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 16px 24px;
+}
 
 .update-working-schedule p {
-    margin-top: 16px;
+    margin-top: 24px;
+    margin-bottom: 16px;
 }
 
 .update-working-schedule [type="checkbox"]:checked + span {
@@ -243,13 +294,14 @@
 
 .trainerDays, #working-schedule {
     margin-top: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
 }
 
 #working-schedule {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
+    margin-bottom: 36px;
 }
 
 .startTime, .endTime {
@@ -265,9 +317,6 @@
 
 .trainerDays label {
     background-color: #fff;
-}
-
-.trainerDays label {
     min-width: 8rem;
     max-width: 10rem;
 }
@@ -278,4 +327,35 @@
     margin-bottom: 16px;
 }
 
+
+/* ----- BOOK SESSION COMPONENT ----- */
+
+
+.book-session-form {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 20px; /* separación uniforme entre campos */
+}
+
+.book-session-form li {
+  list-style: none;
+}
+
+.book-session-form h4 {
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.book-session-form li input {
+    display: block;
+    width: 100%;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    min-height: 2.7rem;
+    line-height: 2rem;
+    padding: 6px 12px;
+    outline: none;
+    border: none;
+}
 

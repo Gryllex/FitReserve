@@ -8,6 +8,6 @@ export const trainerRoutes = Router();
 
 // Routes for trainers
 trainerRoutes.get('/me/sessions', authMiddleware,  SessionController.getTrainerSessions);       // Ver sesiones propias
-trainerRoutes.delete('/sessions/:id', authMiddleware,  SessionController.cancelSession);        // Cancelar una sesión
+trainerRoutes.put('/sessions/:id', authMiddleware,  SessionController.cancelSession);        // Cancelar una sesión
 trainerRoutes.get('/availability', authMiddleware, TrainerController.getAvailabilityByTrainer); // Get schedule
 trainerRoutes.put('/availability/', authMiddleware, TrainerController.updateAvailability);      // Update schedule

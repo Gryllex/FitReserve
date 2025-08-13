@@ -3,6 +3,7 @@ import { SessionModel } from "../models/session.model.ts";
 import { validateSession } from "../schemas/sessionSchema.ts";
 import { AuthenticatedRequest } from "../middlewares/auth.middlewares.ts";
 import { TrainerModel } from "../models/trainer.model.ts";
+import { UserModel } from "../models/user.model.ts";
 
 export class SessionController {
 
@@ -39,10 +40,18 @@ export class SessionController {
     // Book a new session
     static bookSession = async (req: AuthenticatedRequest, res: Response) => {
         try {
+            // Verify user
             if (!req.user){
                 return res.status(401).json({ error: 'No autorizado '})
             }
-            const { trainerId, date, duration } = req.body
+
+            // Verify trainer
+            const trainer = await UserModel.getUserByEmail(req.body.trainerEmail)
+            if (!trainer) return res.status(404).json({error: 'Trainer not found'})
+            if (trainer.role !== 'TRAINER') return res.status(400).json({ error: 'User is not a trainer' });
+
+            const { date, duration } = req.body
+            const trainerId = trainer.id
             const clientId = req.user.userId;
 
             // Data verification using ZOD
@@ -90,7 +99,7 @@ export class SessionController {
             return res.status(201).json({ message: 'Session booked', session })
         } catch (e) {
             console.error('[bookSession] Error:', e);
-            return res.status(500).json({ error: 'Something went wrong' });
+            return res.status(500).json({ error: 'Something went wrong while booking the session' });
         } 
     }
 

@@ -56,7 +56,7 @@ export function MyDashboard() {
     const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (changePassword !== confirmChangePassword) {
-            setError('Passwords must match')
+            setError('Passwords do not match')
             return
         } else {
             setError('')
@@ -97,47 +97,50 @@ export function MyDashboard() {
     if (loading) return <p>Loading...</p>
 
     return (
-        <ul className="dashboard-user-data">
-            <li>
-                <h4>Username</h4>
-                <p>{user?.username}</p>
-            </li>
+        <div className="dashboard-section dashboard-mydashboard">  
+            <h2>My dashboard</h2>
+            <ul className="dashboard-user-data">
+                <li>
+                    <h4>Username</h4>
+                    <p>{user?.username}</p>
+                </li>
 
-            <li>
-                <h4>User ID</h4>
-                <p>{user?.id}</p>
-            </li>
+                <li>
+                    <h4>User ID</h4>
+                    <p>{user?.id}</p>
+                </li>
 
-            <li>
-                <h4>Email</h4>
-                <p>{user?.email}</p>
-            </li>
+                <li>
+                    <h4>Email</h4>
+                    <p>{user?.email}</p>
+                </li>
 
-            <li>
-                <h4>Role</h4>
-                <p>{user?.role}</p>
-            </li>
-            
-            <li>    
-                <h4>Password</h4>
+                <li>
+                    <h4>Role</h4>
+                    <p>{user?.role}</p>
+                </li>
+                
+                <li>    
+                    <h4>Password</h4>
 
-                <form onSubmit={(e) => handleChangePassword(e)}>
-                    <input type="password" className="change-password" placeholder="Type a new password"
-                        value={changePassword}
-                        onChange={(e) => setChangePassword(e.target.value)}
-                    />
-                    
-                    { changePassword && <>
-                        <input type="password" className="change-password" placeholder="Confirm password"
-                        value={confirmChangePassword}
-                        onChange={(e) => setConfirmChangePassword(e.target.value)}/>
+                    <form onSubmit={(e) => handleChangePassword(e)}>
+                        <input type="password" className="change-password" placeholder="Type a new password"
+                            value={changePassword}
+                            onChange={(e) => setChangePassword(e.target.value)}
+                        />
+                        
+                        { changePassword && <>
+                            <input type="password" className="change-password" placeholder="Confirm password"
+                            value={confirmChangePassword}
+                            onChange={(e) => setConfirmChangePassword(e.target.value)}/>
 
-                        <button type="submit" className="dashboard-button" >Confirm password change</button>   
-                    </>}
-                </form>
-            </li>
-            { error && <p className="error-message">{error}</p>}
-            { success && <p className="dashboard-success">{success}</p>}
-        </ul>
+                            <button type="submit" className="dashboard-button" >Confirm password change</button>   
+                        </>}
+                    </form>
+                </li>
+                { error && <p className="error-message">{error}</p>}
+                { success && <p className="dashboard-success">{success}</p>}
+            </ul>
+        </div>
     )
 }

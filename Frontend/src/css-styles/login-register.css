@@ -71,7 +71,7 @@
 .trainerDays {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 16px;
     text-align: center;
     justify-content: space-evenly;
     padding: 0;

@@ -163,7 +163,8 @@ export function WorkingSchedule() {
     }
 
     return (
-        <>
+        <div className="dashboard-section">
+            <h2>Working Schedule</h2>
             <ul className="dashboard-user-data">
                 <li>
                     <h4>Current working days</h4>
@@ -201,6 +202,6 @@ export function WorkingSchedule() {
                 { updateData && showSuccess && <p className="success-message"> {message} </p> }
 
             </div>
-        </>
+        </div>
     )
 }
