@@ -238,6 +238,7 @@
 }
 
 .dashboard-filters-container button {
+    background-color: #f8f8f8;
     font-weight: normal;
     border: none;
     border-bottom: 2px solid #ed8b4f;
@@ -245,7 +246,7 @@
 }
 
 .dashboard-filters-container button:hover {
-    background-color: #e8e8e8;
+    background-color: #eaeaea;
 }
 
 .dashboard-selected-filter-button {
