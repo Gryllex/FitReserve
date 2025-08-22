@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import '../css-styles/login-register.css'
 import { useState } from 'react'
+import { RegisterTrainer } from './RegisterTrainer'
 
 type RegisterData = {
     name: string,
@@ -12,12 +13,17 @@ type RegisterData = {
     endTime?: number
 }
 
-
 type RegisterCardProps = {
     onRegister: (data: RegisterData) => void
 }
 
 type Role = 'CLIENT' | 'TRAINER'
+
+type Schedule = {
+    daysOfWeek?: number[],
+    startTime?: number,
+    endTime?: number
+};
 
 export function RegisterCard({ onRegister }: RegisterCardProps) {
     // User
@@ -28,13 +34,9 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
     const [userRole, setUserRole] = useState<Role>('CLIENT')
 
     // Trainer 
-    const [trainerDays, setTrainerDays] = useState<number[]>([])
-    const [trainerStartTime, setTrainerStartTime] = useState<number>()
-    const [trainerEndTime, setTrainerEndTime] = useState<number>()
+    const [newSchedule, setNewSchedule] = useState<Schedule>({});
 
     // Form
-    const [startTimeString, setStartTimeString] =useState<string>('')
-    const [endTimeString, setEndTimeString] =useState<string>('')
     const [showErrors, setShowErrors] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -43,48 +45,6 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
     const handleRole = () => {
         setUserRole((prev)=> prev === 'CLIENT' ? 'TRAINER' : 'CLIENT')
     }
-
-
-
-    // Trainer's schedule work days
-    const weekDays = [
-        { day: 'Monday', dayValue: 1},
-        { day: 'Tuesday', dayValue: 2},
-        { day: 'Wednesday', dayValue: 3},
-        { day: 'Thursday', dayValue: 4},
-        { day: 'Friday', dayValue: 5},
-        { day: 'Saturday', dayValue: 6},
-        { day: 'Sunday', dayValue: 0},
-    ]
-
-    const handleCheckboxChange = (dayValue: number, checked: boolean) => {
-        setTrainerDays((prev) => 
-            checked
-            ? [...prev, dayValue]    // Add
-            : prev.filter((value) => value !== dayValue) // Remove    
-        )   
-    }
-
-
-
-    // Trainer's schedule start time and end time
-    const handleTime = ( type: 'startTime' | 'endTime', timeValue: string) => {
-        const [hourStr, minuteStr] = timeValue.split(':')
-        const hour = Number(hourStr)
-        const minutes = Number(minuteStr)
-
-        const time = hour*60 + minutes
-
-        if (type === 'startTime') {
-            setTrainerStartTime(time) 
-            setStartTimeString(timeValue)
-        } 
-        if (type === 'endTime') {
-            setTrainerEndTime(time)
-            setEndTimeString(timeValue)
-        }
-    }
-
 
 
     // Submit logic
@@ -102,15 +62,15 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
             setShowErrors(true);
             return
         }
-        
-        if (userRole === 'TRAINER' && trainerDays.length === 0) {
+
+        if (userRole === 'TRAINER' && !newSchedule?.daysOfWeek?.length) {
             setErrorMessage('Must select at least day');
             setShowErrors(true);
             return
         }
 
         if (userRole === 'TRAINER' && 
-            (!trainerStartTime || !trainerEndTime || trainerStartTime >= trainerEndTime)) {
+            (!newSchedule?.startTime || !newSchedule?.endTime || newSchedule?.startTime >= newSchedule?.endTime)) {
             setErrorMessage('Please set a valid schedule (start must be before end)');
             setShowErrors(true);
             return
@@ -121,11 +81,14 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
 
 
         const registerUser = { name: username, email: userEmail, password: userPassword, role: 'CLIENT'}
-        const registerTrainer = { name: username, email: userEmail, password: userPassword, role: 'TRAINER', daysOfWeek: trainerDays, startTime: trainerStartTime, endTime: trainerEndTime }
+        const registerTrainer = { 
+            name: username, email: userEmail, password: userPassword, role: 'TRAINER',
+            daysOfWeek: newSchedule.daysOfWeek, startTime: newSchedule.startTime, endTime: newSchedule.endTime
+        }
         onRegister( userRole === 'TRAINER' ? registerTrainer : registerUser)
     }
 
-
+    
 
     // Render HTML
     return (
@@ -179,40 +142,9 @@ export function RegisterCard({ onRegister }: RegisterCardProps) {
                             Register as trainer</label>
                     </div>
 
-
-                    {/* Trainer availability days, startTime, endTime */}
                     { userRole === 'TRAINER' && 
-                      <>
-                        <p>Working days</p>
-                        <div className='trainerDays'>
-                            {weekDays.map(({ day, dayValue }) => (
-                                <label key={dayValue}>
-                                    {day}
-                                    <input type="checkbox" 
-                                        value={dayValue}
-                                        checked={trainerDays.includes(dayValue)}
-                                        onChange={(e)=>handleCheckboxChange(dayValue, e.target.checked)}/>
-                                </label>
-                            ))}
-                        </div>
-
-                        <p>Working Schedule</p>
-                        <div id='working-schedule'>
-                            <label className='startTime'>
-                                <input required type="time"
-                                    value={startTimeString}
-                                    onChange={(e)=>handleTime('startTime', e.target.value)} />
-                            </label>
-                            →
-                            <label className='endTime'>
-                                <input required type="time"
-                                    value={endTimeString}
-                                    onChange={(e)=>handleTime('endTime', e.target.value)} />
-                            </label>
-                        </div>
-                      </>
+                      <RegisterTrainer onChange={setNewSchedule} />
                     }
-
 
                     {/* Error messages */}
                     { showErrors &&
