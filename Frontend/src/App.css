@@ -15,11 +15,10 @@ html, body, #root {
   color: inherit;
 }
 
-.navbar-logo-container {
-  padding-top: 20px;
+/* .navbar-logo-container {
   text-align: center;
   display: block;
-}
+} */
 
 .loginLogo {
   height: 120px;

@@ -1,4 +1,184 @@
 
-.provisional-body {
-  height: 2000px;
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+}
+
+/* .home-section {
+} */
+
+
+.main-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 24px;
+  background-image: url('../src/assets/gym.png');
+  background-size: cover;
+  background-position: -150px;
+  min-height: 80vh;
+}
+
+
+.main-section-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-evenly;
+  background-color: #0007;
+  border-radius: 24px;
+  padding: 24px 8px;
+  color: #fff;
+  max-width: 500px;
+  margin: auto;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.main-section-info .hero-title {
+  color: #fff;
+  font-size: 2.4rem;
+  text-wrap: pretty;
+  text-align: center;
+}
+
+.main-section-info p {
+  margin: 16px 0;
+  font-size: 1.2rem;
+  color: #ed8b4f;
+}
+
+.main-section-info button {
+  margin-bottom: 12px;
+}
+
+
+.sponsor-section {
+  background-color: #fff;
+  z-index: 50;
+  display: flex;
+  place-content: center;
+}
+
+.sponsor-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+/* MAIN SECTION QUERIES */
+
+@media screen and (min-width: 800px) {
+
+  .main-section {
+    width: 100%;
+    background-image: url('../src/assets/gym.png');
+    padding: 48px 24px;
+  }
+
+  .main-section-info {
+    padding: 56px 24px;
+    gap: 16px;
+    max-width: 500px;
+  }
+
+}
+
+
+/* TRAINING BENEFITS STYLES */
+
+.training-benefits {
+  background: #342f2d;
+  padding: 48px 24px;
+}
+
+.training-benefits__card-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.training-benefits__card {
+
+  border-radius: 6px;
+  background-color: #fff;
+  color: #ed8b4f;
+  font-weight: 600;
+  font-size: 1.2rem;
+  animation: appear both;
+  animation-timeline: view();
+  animation-range: cover 5% contain 60%;
+}
+
+
+.training-benefits__card img {
+  display: block;
+  /* aspect-ratio: 4 / 3; */
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 4px solid #ed8b4f;
+}
+
+
+.training-benefits__card p {
+  text-align: center;
+  padding: 12px 0;
+  text-align: center;
+}
+
+
+/* TRAINING BENEFITS QUERIES */
+
+@media (min-width: 800px) {
+  .training-benefits__card-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .training-benefits__card img {
+    height: 360px;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .training-benefits__card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ANIMATIONS */
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

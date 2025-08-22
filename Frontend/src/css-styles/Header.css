@@ -1,59 +1,145 @@
 
 .main-page-header {
-    background: #3f3f3f;
     position: sticky;
     top: 0;
-    box-shadow: 0 2px 10px #2f2f2f;
+    z-index: 1000;
+    box-shadow: 0 3px 16px #2a2a2a;
+    border-bottom: 3px solid #ed8b4f;
+    background-color: #fff;
 }
 
 .header-wrapper {
     width: 100%;
     height: 80px;
-    display: flex;
-    justify-content: space-between;
+    display: none;
+    flex-direction: column;
     align-items: center;
-    padding-left: 2rem;
-    padding-right: 2rem;
     gap: 24px;
+}
+
+.header-mobile-checkbox-container{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 60px;
+    padding: 16px;
+}
+
+.header-mobile-checkbox-container img {
+    height: 60px;
+    filter: invert(69%) sepia(96%) saturate(1632%) hue-rotate(325deg) brightness(98%) contrast(90%);
+}
+
+.header-mobile-checkbox-container input {
+    display: none;
 }
 
 .left-header, .right-header{
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 1.5rem;
     height: 80px;
 }
 
-.left-header img {
+.header-logo {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+}
+
+
+.header-logo img {
     display: block;
     height: 60px;
     width: auto;
     border-radius: 12px;
-    
+    border: 2px solid #ed8b4f;
 }
 
-a {
+.main-page-header a {
+    color: #ed8b4f;
+}
+
+.main-page-header a:hover {
+    color: #f25d00;
+    transition: 0.2s all
+}
+
+.header-logo img:hover {
+    border-color: #f25d00;
+    transition: 0.2s all
+}
+
+.header-wrapper button {
+    outline: none;
+    border-color: none;
+    border-color: transparent;
+    background-color: #ed8b4f;
     color: #fff;
+
 }
 
-.main-page-header {
-        animation: header-movement both;
-        animation-timeline: scroll();
-        animation-range-start: 0px;
-        animation-range-end: 250px;
-    }
+.header-wrapper button:hover {
+    transition: 0.3s ease;
+}
+
 
 /* ---------------- HEADER QUERIES ---------------- */
 
-/* @media screen and (min-width: 700px) {
+@media screen and (max-width: 800px) {
+    .display-mobile-header {
+        display: flex;
+        gap: 48px;
+        position: absolute;
+        top: calc(60px + 35px);
+        background-color: #1f1f1f;
+        height: calc(100vh - 60px - 35px);
+        padding: 2rem 0;
+    }
 
-    header {
+    .display-mobile-header a {
+        color: #fff;
+    }
+}
+
+
+@media screen and (min-width: 800px) {
+
+    .header-mobile-checkbox-container {
+        display: none;
+    }
+
+
+    .main-page-header {
+        display: flex;
         animation: header-movement both;
         animation-timeline: scroll();
         animation-range-start: 0px;
         animation-range-end: 250px;
     }
-} */
+
+    .header-wrapper {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        gap: 24px;
+    }
+
+    .left-header, .right-header{
+        flex-direction: row;
+    }
+
+    .header-logo {
+        padding: 0;
+        padding-left: 1.5rem;
+        align-items: center;
+    }    
+}
 
 
 
