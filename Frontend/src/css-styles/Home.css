@@ -18,7 +18,8 @@
   padding: 48px 24px;
   background-image: url('../src/assets/gym.png');
   background-size: cover;
-  background-position: -150px;
+  background-position: -300px;
+  transition: 1s ease background-position;
   min-height: 80vh;
 }
 
@@ -113,7 +114,7 @@
   font-size: 1.2rem;
   animation: appear both;
   animation-timeline: view();
-  animation-range: cover 5% contain 60%;
+  animation-range: cover 10% contain 70%;
 }
 
 
@@ -144,6 +145,11 @@
   .training-benefits__card img {
     height: 360px;
   }
+
+  .main-section {
+    background-position: -350px;
+    transition: 1s ease background-position;
+  }
 }
 
 
@@ -151,9 +157,19 @@
   .training-benefits__card-container {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .main-section {
+    background-position: -150px;
+    transition: 1s ease background-position;
+  }
 }
 
-
+@media (min-width: 1800px) {
+  .main-section {
+    background-position: 0px;
+    transition: 1s ease background-position;
+  }
+}
 
 
 
